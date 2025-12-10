@@ -14,7 +14,36 @@
             color: #333;
             line-height: 1.6;
             overflow-x: hidden;
+            animation: backgroundShift 10s ease-in-out infinite alternate;
         }
+        @keyframes backgroundShift {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
+        /* Floating particles */
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 105, 180, 0.3);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: float 6s ease-in-out infinite;
+        }
+        .particle:nth-child(odd) {
+            animation-duration: 8s;
+            animation-delay: -2s;
+        }
+        .particle:nth-child(3n) {
+            animation-duration: 10s;
+            animation-delay: -4s;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.5; }
+            50% { transform: translateY(-20px) rotate(180deg); opacity: 1; }
+        }
+
         header {
             background: linear-gradient(135deg, #ff69b4 0%, #ffb6c1 100%);
             color: white;
@@ -22,7 +51,13 @@
             padding: 60px 20px;
             position: relative;
             overflow: hidden;
+            animation: headerPulse 4s ease-in-out infinite;
         }
+        @keyframes headerPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
         h1 {
             margin: 0;
             font-size: 4em;
@@ -33,27 +68,96 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            animation: glow 2s ease-in-out infinite alternate;
+            animation: glow 2s ease-in-out infinite alternate, textFloat 3s ease-in-out infinite;
         }
         @keyframes glow {
             from { text-shadow: 3px 3px 6px rgba(0,0,0,0.2), 0 0 20px rgba(255,105,180,0.3); }
             to { text-shadow: 3px 3px 6px rgba(0,0,0,0.2), 0 0 30px rgba(255,105,180,0.6), 0 0 40px rgba(255,105,180,0.4); }
         }
-        nav {
-            background: rgba(255, 255, 255, 0.9);
-            padding: 10px;
-            text-align: center;
-            box-shadow: 0 2px 10px rgba(255,105,180,0.2);
+        @keyframes textFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
         }
+
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 2px 20px rgba(255,105,180,0.3);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,105,180,0.1);
+            animation: navSlideIn 1s ease-out;
+        }
+        @keyframes navSlideIn {
+            from { transform: translateY(-100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
         nav a {
             color: #ff69b4;
             text-decoration: none;
-            margin: 0 15px;
+            margin: 0 20px;
             font-weight: 600;
-            transition: color 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            padding: 5px 10px;
+            border-radius: 20px;
+        }
+        nav a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,105,180,0.2), transparent);
+            transition: left 0.5s;
+        }
+        nav a:hover::before {
+            left: 100%;
         }
         nav a:hover {
             color: #ffb6c1;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255,105,180,0.3);
+        }
+
+        #playAudio {
+            background: linear-gradient(135deg, #ff69b4, #ffb6c1);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 25px;
+            cursor: pointer;
+            margin-left: 15px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255,105,180,0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        #playAudio::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255,255,255,0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        #playAudio:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        #playAudio:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(255,105,180,0.5);
+        }
+        #playAudio:active {
+            transform: translateY(0) scale(0.95);
         }
         .container {
             max-width: 900px;
@@ -176,13 +280,14 @@
         <a href="hobbies.html">Hobbies</a>
         <a href="favorites.html">Favorites</a>
         <a href="projects.html">Projects</a>
+        <button id="playAudio" style="background: #ff69b4; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; margin-left: 10px;">▶ Play Music</button>
     </nav>
     <div class="container">
         <div class="profile">
             <img src="Foto.jpg" alt="Rahyan's Photo">
             <div class="profile-info">
                 <h2>About Me</h2>
-                <p>Saya adalah siswi dari <span class="highlight">SMK TEKNOLOGI INFORMATIKA BULUKUMBA</span>, kelas XI. Alamat saya K.H. Ahmad Dahlan. Umur saya 16 tahun. <span class="highlight">/</span>.</p>
+                <p>Saya Rahyan, Saya adalah siswi dari <span class="highlight">SMK TEKNOLOGI INFORMATIKA BULUKUMBA</span>, kelas XI. Alamat saya K.H. Ahmad Dahlan. Umur saya 16 tahun. <span class="highlight">/</span>.</p>
                 <h3>Riwayat Pendidikan</h3>
                 <p><span class="highlight">SMK TEKNOLOGI INFORMATIKA BULUKUMBA</span></p>
                 <p><span class="highlight">SMP NEGERI 1 BULUKUMBA</span></p>
@@ -199,15 +304,77 @@
     <footer>
         Made with "by Rahyan"
     </footer>
+    <script src="audio.js"></script>
     <script>
-        // Simple animation on load
+        // Create floating particles
+        function createParticles() {
+            const particleCount = 50;
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 5 + 's';
+                document.body.appendChild(particle);
+            }
+        }
+
+        // Enhanced animations on load
         window.addEventListener('load', function() {
+            createParticles();
+
             const container = document.querySelector('.container');
             container.style.opacity = '0';
+            container.style.transform = 'translateY(50px) scale(0.9)';
             setTimeout(() => {
-                container.style.transition = 'opacity 1s ease-in';
+                container.style.transition = 'all 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
                 container.style.opacity = '1';
-            }, 100);
+                container.style.transform = 'translateY(0) scale(1)';
+            }, 200);
+
+            // Staggered text animation
+            const paragraphs = document.querySelectorAll('.profile-info p');
+            paragraphs.forEach((p, index) => {
+                p.style.opacity = '0';
+                p.style.transform = 'translateX(-30px)';
+                setTimeout(() => {
+                    p.style.transition = 'all 0.8s ease-out';
+                    p.style.opacity = '1';
+                    p.style.transform = 'translateX(0)';
+                }, 600 + index * 200);
+            });
+
+            // Contact info animation
+            const contactItems = document.querySelectorAll('.contact p');
+            contactItems.forEach((item, index) => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    item.style.transition = 'all 0.6s ease-out';
+                    item.style.opacity = '1';
+                    item.style.transform = 'translateY(0)';
+                }, 1000 + index * 150);
+            });
+        });
+
+        // Mouse follow effect for particles
+        document.addEventListener('mousemove', function(e) {
+            const particles = document.querySelectorAll('.particle');
+            particles.forEach(particle => {
+                const rect = particle.getBoundingClientRect();
+                const particleX = rect.left + rect.width / 2;
+                const particleY = rect.top + rect.height / 2;
+                const deltaX = e.clientX - particleX;
+                const deltaY = e.clientY - particleY;
+                const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+
+                if (distance < 100) {
+                    const force = (100 - distance) / 100;
+                    particle.style.transform = `translate(${deltaX * force * 0.1}px, ${deltaY * force * 0.1}px)`;
+                } else {
+                    particle.style.transform = 'translate(0, 0)';
+                }
+            });
         });
     </script>
 </body>

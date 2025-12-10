@@ -180,6 +180,7 @@
         <a href="hobbies.html">Hobbies</a>
         <a href="favorites.html">Favorites</a>
         <a href="projects.html">Projects</a>
+        <button id="playAudio" style="background: #ff69b4; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; margin-left: 10px;">▶ Play Music</button>
     </nav>
     <div class="container">
         <h2>Favorites</h2>
@@ -237,7 +238,67 @@
     <footer>
         Made with 💖 by Rahyan
     </footer>
+    <script src="audio.js"></script>
     <script>
+        // Create floating particles
+        function createParticles() {
+            const particleCount = 50;
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 5 + 's';
+                document.body.appendChild(particle);
+            }
+        }
+
+        // Enhanced animations on load
+        window.addEventListener('load', function() {
+            createParticles();
+
+            const container = document.querySelector('.container');
+            container.style.opacity = '0';
+            container.style.transform = 'translateY(50px) scale(0.9)';
+            setTimeout(() => {
+                container.style.transition = 'all 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                container.style.opacity = '1';
+                container.style.transform = 'translateY(0) scale(1)';
+            }, 200);
+
+            // Staggered text animation for favorite items
+            const items = document.querySelectorAll('.favorite-item');
+            items.forEach((item, index) => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateX(-30px)';
+                setTimeout(() => {
+                    item.style.transition = 'all 0.8s ease-out';
+                    item.style.opacity = '1';
+                    item.style.transform = 'translateX(0)';
+                }, 600 + index * 150);
+            });
+        });
+
+        // Mouse follow effect for particles
+        document.addEventListener('mousemove', function(e) {
+            const particles = document.querySelectorAll('.particle');
+            particles.forEach(particle => {
+                const rect = particle.getBoundingClientRect();
+                const particleX = rect.left + rect.width / 2;
+                const particleY = rect.top + rect.height / 2;
+                const deltaX = e.clientX - particleX;
+                const deltaY = e.clientY - particleY;
+                const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+
+                if (distance < 100) {
+                    const force = (100 - distance) / 100;
+                    particle.style.transform = `translate(${deltaX * force * 0.1}px, ${deltaY * force * 0.1}px)`;
+                } else {
+                    particle.style.transform = 'translate(0, 0)';
+                }
+            });
+        });
+
         // Add click interaction to favorite items
         const items = document.querySelectorAll('.favorite-item');
         items.forEach(item => {
